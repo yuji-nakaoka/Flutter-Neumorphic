@@ -1,15 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 class WidgetsSample extends StatefulWidget {
-  WidgetsSample({Key key}) : super(key: key);
+  const WidgetsSample({Key? key}) : super(key: key);
 
   @override
   createState() => _ContainersListPageState();
 }
 
 class _ContainersListPageState extends State<WidgetsSample> {
-  int _groupValue;
+  late int _groupValue = 1;
   bool _switchConcaveEnabled = false;
   bool _switchConvexEnabled = false;
   bool _switchFlatEnabled = false;
@@ -109,66 +108,29 @@ class _ContainersListPageState extends State<WidgetsSample> {
           "Radio",
           style: TextStyle(color: _textColor()),
         ),
-        SizedBox(width: 12),
-        NeumorphicRadio(
-          child: SizedBox(
-            height: 50,
-            width: 50,
-            child: Center(
-              child: Text(
-                "1",
-                style: TextStyle(color: _textColor()),
+        const SizedBox(width: 12),
+        ...List.generate(3, (index) {
+          final value = index + 1;
+          return Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: NeumorphicRadio<int>(
+              child: SizedBox(
+                height: 50,
+                width: 50,
+                child: Center(
+                  child: Text(
+                    "$value",
+                    style: TextStyle(color: _textColor()),
+                  ),
+                ),
               ),
+              value: value,
+              groupValue: _groupValue,
+              onChanged: (val) =>
+                  setState(() => _groupValue = val ?? _groupValue),
             ),
-          ),
-          value: 1,
-          groupValue: _groupValue,
-          onChanged: (value) {
-            setState(() {
-              _groupValue = value;
-            });
-          },
-        ),
-        SizedBox(width: 12),
-        NeumorphicRadio(
-          child: SizedBox(
-            height: 50,
-            width: 50,
-            child: Center(
-              child: Text(
-                "2",
-                style: TextStyle(color: _textColor()),
-              ),
-            ),
-          ),
-          value: 2,
-          groupValue: _groupValue,
-          onChanged: (value) {
-            setState(() {
-              _groupValue = value;
-            });
-          },
-        ),
-        SizedBox(width: 12),
-        NeumorphicRadio(
-          child: SizedBox(
-            height: 50,
-            width: 50,
-            child: Center(
-              child: Text(
-                "3",
-                style: TextStyle(color: _textColor()),
-              ),
-            ),
-          ),
-          value: 3,
-          groupValue: _groupValue,
-          onChanged: (value) {
-            setState(() {
-              _groupValue = value;
-            });
-          },
-        ),
+          );
+        }),
       ],
     );
   }

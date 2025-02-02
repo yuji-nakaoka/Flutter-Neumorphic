@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-
 import 'ThemeColorSelector.dart';
 
 class ThemeConfigurator extends StatelessWidget {
@@ -50,7 +48,7 @@ class ThemeConfigurator extends StatelessWidget {
 class _ThemeConfiguratorDialog extends StatefulWidget {
   final BuildContext contextContainingTheme;
 
-  _ThemeConfiguratorDialog({this.contextContainingTheme});
+  _ThemeConfiguratorDialog({required this.contextContainingTheme});
 
   @override
   _ThemeConfiguratorState createState() => _ThemeConfiguratorState();
@@ -82,12 +80,12 @@ class _ThemeConfiguratorState extends State<_ThemeConfiguratorDialog> {
           child: Slider(
             min: Neumorphic.MIN_INTENSITY, //in case of != 0
             max: Neumorphic.MAX_INTENSITY,
-            value: intensity,
+            value: intensity ?? 0.5,
             onChanged: (value) {
               setState(() {
                 NeumorphicTheme.update(
                   widget.contextContainingTheme,
-                  (current) => current.copyWith(
+                  (current) => current!.copyWith(
                     intensity: value,
                   ),
                 );
@@ -99,7 +97,7 @@ class _ThemeConfiguratorState extends State<_ThemeConfiguratorDialog> {
           padding: EdgeInsets.only(right: 12),
           child: Container(
             width: 40,
-            child: Text(((intensity * 100).floor() / 100).toString()),
+            child: Text(((intensity ?? 0 * 100).floor() / 100).toString()),
           ),
         ),
       ],
@@ -119,12 +117,12 @@ class _ThemeConfiguratorState extends State<_ThemeConfiguratorDialog> {
           child: Slider(
             min: Neumorphic.MIN_DEPTH,
             max: Neumorphic.MAX_DEPTH,
-            value: depth,
+            value: depth ?? 0,
             onChanged: (value) {
               setState(() {
                 NeumorphicTheme.update(
                   widget.contextContainingTheme,
-                  (current) => current.copyWith(depth: value),
+                  (current) => current!.copyWith(depth: value),
                 );
               });
             },
@@ -134,7 +132,7 @@ class _ThemeConfiguratorState extends State<_ThemeConfiguratorDialog> {
           padding: EdgeInsets.only(right: 12),
           child: Container(
             width: 40,
-            child: Text(depth.floor().toString()),
+            child: Text(depth!.floor().toString()),
           ),
         ),
       ],
