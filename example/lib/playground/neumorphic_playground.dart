@@ -30,7 +30,7 @@ class _Page extends StatefulWidget {
 class __PageState extends State<_Page> {
   LightSource lightSource = LightSource.topLeft;
   NeumorphicShape shape = NeumorphicShape.flat;
-  NeumorphicBoxShape boxShape;
+  late NeumorphicBoxShape boxShape;
   double depth = 5;
   double intensity = 0.5;
   double surfaceIntensity = 0.5;
@@ -68,17 +68,18 @@ class __PageState extends State<_Page> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
-                color: Theme.of(context).accentColor,
-                child: Text(
-                  "back",
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                ),
+                onPressed: () => Navigator.pop(context),
+                child: const Text(
+                  "Back",
                   style: TextStyle(color: Colors.white),
                 ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
               ),
             ),
             Flexible(
@@ -102,7 +103,7 @@ class __PageState extends State<_Page> {
   int selectedConfiguratorIndex = 0;
 
   Widget _configurators() {
-    final Color buttonActiveColor = Theme.of(context).accentColor;
+    final Color buttonActiveColor = Theme.of(context).colorScheme.secondary;
     final Color buttonInnactiveColor = Colors.white;
 
     final Color textActiveColor = Colors.white;
@@ -122,12 +123,17 @@ class __PageState extends State<_Page> {
                 flex: 1,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
-                    color: selectedConfiguratorIndex == 0
-                        ? buttonActiveColor
-                        : buttonInnactiveColor,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      backgroundColor: selectedConfiguratorIndex == 0
+                          ? buttonActiveColor
+                          : buttonInnactiveColor,
+                    ),
+                    onPressed: () =>
+                        setState(() => selectedConfiguratorIndex = 0),
                     child: Text(
                       "Style",
                       style: TextStyle(
@@ -136,11 +142,6 @@ class __PageState extends State<_Page> {
                             : textInactiveColor,
                       ),
                     ),
-                    onPressed: () {
-                      setState(() {
-                        selectedConfiguratorIndex = 0;
-                      });
-                    },
                   ),
                 ),
               ),
@@ -148,9 +149,17 @@ class __PageState extends State<_Page> {
                 flex: 1,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      backgroundColor: selectedConfiguratorIndex == 1
+                          ? buttonActiveColor
+                          : buttonInnactiveColor,
+                    ),
+                    onPressed: () =>
+                        setState(() => selectedConfiguratorIndex = 1),
                     child: Text(
                       "Element",
                       style: TextStyle(
@@ -159,14 +168,6 @@ class __PageState extends State<_Page> {
                             : textInactiveColor,
                       ),
                     ),
-                    color: selectedConfiguratorIndex == 1
-                        ? buttonActiveColor
-                        : buttonInnactiveColor,
-                    onPressed: () {
-                      setState(() {
-                        selectedConfiguratorIndex = 1;
-                      });
-                    },
                   ),
                 ),
               ),
@@ -174,9 +175,17 @@ class __PageState extends State<_Page> {
                 flex: 1,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      backgroundColor: selectedConfiguratorIndex == 2
+                          ? buttonActiveColor
+                          : buttonInnactiveColor,
+                    ),
+                    onPressed: () =>
+                        setState(() => selectedConfiguratorIndex = 2),
                     child: Text(
                       "Child",
                       style: TextStyle(
@@ -185,14 +194,6 @@ class __PageState extends State<_Page> {
                             : textInactiveColor,
                       ),
                     ),
-                    color: selectedConfiguratorIndex == 2
-                        ? buttonActiveColor
-                        : buttonInnactiveColor,
-                    onPressed: () {
-                      setState(() {
-                        selectedConfiguratorIndex = 2;
-                      });
-                    },
                   ),
                 ),
               )
@@ -208,15 +209,14 @@ class __PageState extends State<_Page> {
     switch (selectedConfiguratorIndex) {
       case 0:
         return styleCustomizer();
-        break;
+
       case 1:
         return elementCustomizer();
-        break;
+
       case 2:
         return childCustomizer();
-        break;
     }
-    return null;
+    return SizedBox();
   }
 
   Widget styleCustomizer() {
@@ -269,8 +269,9 @@ class __PageState extends State<_Page> {
         ColorSelector(
           onColorChanged: (color) {
             setState(() {
-              NeumorphicTheme.of(context)
-                  .updateCurrentTheme(NeumorphicThemeData(baseColor: color));
+              NeumorphicTheme.of(context)?.updateCurrentTheme(
+                NeumorphicThemeData(baseColor: color),
+              );
             });
           },
           color: NeumorphicTheme.baseColor(context),
@@ -428,12 +429,9 @@ class __PageState extends State<_Page> {
         Align(
           alignment: Alignment.centerRight,
           child: Checkbox(
-            value: this.haveNeumorphicChild,
-            onChanged: (value) {
-              setState(() {
-                haveNeumorphicChild = value;
-              });
-            },
+            value: haveNeumorphicChild,
+            onChanged: (value) =>
+                setState(() => haveNeumorphicChild = value ?? false),
           ),
         ),
       ],
@@ -454,12 +452,9 @@ class __PageState extends State<_Page> {
         Align(
           alignment: Alignment.centerRight,
           child: Checkbox(
-            value: this.drawAboveChild,
-            onChanged: (value) {
-              setState(() {
-                drawAboveChild = value;
-              });
-            },
+            value: drawAboveChild,
+            onChanged: (value) =>
+                setState(() => drawAboveChild = value ?? false),
           ),
         ),
       ],
@@ -480,12 +475,9 @@ class __PageState extends State<_Page> {
         Align(
           alignment: Alignment.centerRight,
           child: Checkbox(
-            value: this.childOppositeLightsourceChild,
-            onChanged: (value) {
-              setState(() {
-                childOppositeLightsourceChild = value;
-              });
-            },
+            value: childOppositeLightsourceChild,
+            onChanged: (value) =>
+                setState(() => childOppositeLightsourceChild = value ?? false),
           ),
         ),
       ],
@@ -622,7 +614,7 @@ class __PageState extends State<_Page> {
   }
 
   Widget boxshapeWidget() {
-    final Color buttonActiveColor = Theme.of(context).accentColor;
+    final Color buttonActiveColor = Theme.of(context).colorScheme.secondary;
     final Color buttonInnactiveColor = Colors.white;
 
     final Color textActiveColor = Colors.white;
@@ -634,24 +626,26 @@ class __PageState extends State<_Page> {
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
-              onPressed: () {
-                setState(() {
-                  boxShape = NeumorphicBoxShape.roundRect(
-                      BorderRadius.circular(this.cornerRadius));
-                });
-              },
-              color: boxShape.isRoundRect
-                  ? buttonActiveColor
-                  : buttonInnactiveColor,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                backgroundColor: boxShape.isRoundRect
+                    ? buttonActiveColor
+                    : buttonInnactiveColor,
+              ),
+              onPressed: () => setState(() {
+                boxShape = NeumorphicBoxShape.roundRect(
+                    BorderRadius.circular(cornerRadius));
+              }),
               child: Text(
                 "Rect",
                 style: TextStyle(
-                    color: boxShape.isRoundRect
-                        ? textActiveColor
-                        : textInactiveColor),
+                  color: boxShape.isRoundRect
+                      ? textActiveColor
+                      : textInactiveColor,
+                ),
               ),
             ),
           ),
@@ -659,23 +653,25 @@ class __PageState extends State<_Page> {
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
-              onPressed: () {
-                setState(() {
-                  boxShape = NeumorphicBoxShape.beveled(
-                      BorderRadius.circular(this.cornerRadius));
-                });
-              },
-              color:
-                  boxShape.isBeveled ? buttonActiveColor : buttonInnactiveColor,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                backgroundColor: boxShape.isBeveled
+                    ? buttonActiveColor
+                    : buttonInnactiveColor,
+              ),
+              onPressed: () => setState(() {
+                boxShape = NeumorphicBoxShape.beveled(
+                    BorderRadius.circular(cornerRadius));
+              }),
               child: Text(
                 "Beveled",
                 style: TextStyle(
-                    color: boxShape.isBeveled
-                        ? textActiveColor
-                        : textInactiveColor),
+                  color:
+                      boxShape.isBeveled ? textActiveColor : textInactiveColor,
+                ),
               ),
             ),
           ),
@@ -683,22 +679,24 @@ class __PageState extends State<_Page> {
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
-              onPressed: () {
-                setState(() {
-                  boxShape = NeumorphicBoxShape.circle();
-                });
-              },
-              color:
-                  boxShape.isCircle ? buttonActiveColor : buttonInnactiveColor,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                backgroundColor: boxShape.isCircle
+                    ? buttonActiveColor
+                    : buttonInnactiveColor,
+              ),
+              onPressed: () => setState(() {
+                boxShape = NeumorphicBoxShape.circle();
+              }),
               child: Text(
                 "Circle",
                 style: TextStyle(
-                    color: boxShape.isCircle
-                        ? textActiveColor
-                        : textInactiveColor),
+                  color:
+                      boxShape.isCircle ? textActiveColor : textInactiveColor,
+                ),
               ),
             ),
           ),
@@ -706,22 +704,24 @@ class __PageState extends State<_Page> {
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
-              onPressed: () {
-                setState(() {
-                  boxShape = NeumorphicBoxShape.stadium();
-                });
-              },
-              color:
-                  boxShape.isStadium ? buttonActiveColor : buttonInnactiveColor,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                backgroundColor: boxShape.isStadium
+                    ? buttonActiveColor
+                    : buttonInnactiveColor,
+              ),
+              onPressed: () => setState(() {
+                boxShape = NeumorphicBoxShape.stadium();
+              }),
               child: Text(
                 "Stadium",
                 style: TextStyle(
-                    color: boxShape.isStadium
-                        ? textActiveColor
-                        : textInactiveColor),
+                  color:
+                      boxShape.isStadium ? textActiveColor : textInactiveColor,
+                ),
               ),
             ),
           ),
@@ -729,24 +729,26 @@ class __PageState extends State<_Page> {
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
-              onPressed: () {
-                setState(() {
-                  boxShape = NeumorphicBoxShape.path(
-                      NeumorphicFlutterLogoPathProvider());
-                });
-              },
-              color: boxShape.isCustomPath
-                  ? buttonActiveColor
-                  : buttonInnactiveColor,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                backgroundColor: boxShape.isCustomPath
+                    ? buttonActiveColor
+                    : buttonInnactiveColor,
+              ),
+              onPressed: () => setState(() {
+                boxShape = NeumorphicBoxShape.path(
+                    NeumorphicFlutterLogoPathProvider());
+              }),
               child: Text(
                 "Custom",
                 style: TextStyle(
-                    color: boxShape.isCustomPath
-                        ? textActiveColor
-                        : textInactiveColor),
+                  color: boxShape.isCustomPath
+                      ? textActiveColor
+                      : textInactiveColor,
+                ),
               ),
             ),
           ),
@@ -756,7 +758,7 @@ class __PageState extends State<_Page> {
   }
 
   Widget shapeWidget() {
-    final Color buttonActiveColor = Theme.of(context).accentColor;
+    final Color buttonActiveColor = Theme.of(context).colorScheme.secondary;
     final Color buttonInnactiveColor = Colors.white;
 
     final Color iconActiveColor = Colors.white;
@@ -768,63 +770,96 @@ class __PageState extends State<_Page> {
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
-              onPressed: () {
-                setState(() {
-                  shape = NeumorphicShape.concave;
-                });
-              },
-              color: shape == NeumorphicShape.concave
-                  ? buttonActiveColor
-                  : buttonInnactiveColor,
-              child: Image.asset("assets/images/concave.png",
-                  color: shape == NeumorphicShape.concave
-                      ? iconActiveColor
-                      : iconInactiveColor),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                backgroundColor: shape == NeumorphicShape.concave
+                    ? buttonActiveColor
+                    : buttonInnactiveColor,
+              ),
+              onPressed: () => setState(() {
+                shape = NeumorphicShape.concave;
+              }),
+              child: Image.asset(
+                "assets/images/concave.png",
+                color: shape == NeumorphicShape.concave
+                    ? iconActiveColor
+                    : iconInactiveColor,
+              ),
             ),
           ),
         ),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
-              onPressed: () {
-                setState(() {
-                  shape = NeumorphicShape.convex;
-                });
-              },
-              color: shape == NeumorphicShape.convex
-                  ? buttonActiveColor
-                  : buttonInnactiveColor,
-              child: Image.asset("assets/images/convex.png",
-                  color: shape == NeumorphicShape.convex
-                      ? iconActiveColor
-                      : iconInactiveColor),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                backgroundColor: shape == NeumorphicShape.convex
+                    ? buttonActiveColor
+                    : buttonInnactiveColor,
+              ),
+              onPressed: () => setState(() {
+                shape = NeumorphicShape.convex;
+              }),
+              child: Image.asset(
+                "assets/images/convex.png",
+                color: shape == NeumorphicShape.convex
+                    ? iconActiveColor
+                    : iconInactiveColor,
+              ),
             ),
           ),
         ),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
-              onPressed: () {
-                setState(() {
-                  shape = NeumorphicShape.flat;
-                });
-              },
-              color: shape == NeumorphicShape.flat
-                  ? buttonActiveColor
-                  : buttonInnactiveColor,
-              child: Image.asset("assets/images/flat.png",
-                  color: shape == NeumorphicShape.flat
-                      ? iconActiveColor
-                      : iconInactiveColor),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                backgroundColor: shape == NeumorphicShape.concave
+                    ? buttonActiveColor
+                    : buttonInnactiveColor,
+              ),
+              onPressed: () => setState(() {
+                shape = NeumorphicShape.concave;
+              }),
+              child: Image.asset(
+                "assets/images/concave.png",
+                color: shape == NeumorphicShape.concave
+                    ? iconActiveColor
+                    : iconInactiveColor,
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                backgroundColor: shape == NeumorphicShape.convex
+                    ? buttonActiveColor
+                    : buttonInnactiveColor,
+              ),
+              onPressed: () => setState(() {
+                shape = NeumorphicShape.convex;
+              }),
+              child: Image.asset(
+                "assets/images/convex.png",
+                color: shape == NeumorphicShape.convex
+                    ? iconActiveColor
+                    : iconInactiveColor,
+              ),
             ),
           ),
         ),

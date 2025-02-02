@@ -1,13 +1,12 @@
 import 'package:example/lib/Code.dart';
 import 'package:example/lib/color_selector.dart';
 import 'package:example/lib/top_bar.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 import 'dart:math' show Random;
 
 class ProgressWidgetPage extends StatefulWidget {
-  ProgressWidgetPage({Key key}) : super(key: key);
+  ProgressWidgetPage({Key? key}) : super(key: key);
 
   @override
   createState() => _WidgetPageState();
@@ -42,6 +41,7 @@ class _PageState extends State<_Page> {
       child: Scaffold(
         appBar: TopBar(
           title: "Progress",
+          actions: [],
         ),
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
@@ -110,13 +110,14 @@ Expanded(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         _buildWidget(context),
-        FlatButton(
-            child: Text('Update'),
-            onPressed: () {
-              setState(() {
-                percent = Random().nextDouble();
-              });
-            }),
+        TextButton(
+          onPressed: () {
+            setState(() {
+              percent = Random().nextDouble();
+            });
+          },
+          child: const Text('Update'),
+        ),
         _buildCode(context),
       ],
     );
@@ -323,13 +324,14 @@ Expanded(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         _buildWidget(context),
-        FlatButton(
-            child: Text('Update'),
-            onPressed: () {
-              setState(() {
-                percent = Random().nextDouble();
-              });
-            }),
+        TextButton(
+          onPressed: () {
+            setState(() {
+              percent = Random().nextDouble();
+            });
+          },
+          child: const Text('Update'),
+        ),
         _buildCode(context),
       ],
     );
@@ -379,18 +381,20 @@ Expanded(
     );
   }
 
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         _buildWidget(context),
-        FlatButton(
-            child: Text('Update'),
-            onPressed: () {
-              setState(() {
-                percent = Random().nextDouble();
-              });
-            }),
+        TextButton(
+          onPressed: () {
+            setState(() {
+              percent = Random().nextDouble();
+            });
+          },
+          child: const Text('Update'),
+        ),
         _buildCode(context),
       ],
     );

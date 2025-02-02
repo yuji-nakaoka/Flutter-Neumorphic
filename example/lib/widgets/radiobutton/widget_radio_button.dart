@@ -1,11 +1,10 @@
 import 'package:example/lib/Code.dart';
 import 'package:example/lib/ThemeConfigurator.dart';
 import 'package:example/lib/top_bar.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 class RadioButtonWidgetPage extends StatefulWidget {
-  RadioButtonWidgetPage({Key key}) : super(key: key);
+  RadioButtonWidgetPage({Key? key}) : super(key: key);
 
   @override
   createState() => _WidgetPageState();
@@ -69,7 +68,7 @@ class _DefaultWidget extends StatefulWidget {
 }
 
 class _DefaultWidgetState extends State<_DefaultWidget> {
-  int groupValue;
+  late int groupValue;
 
   Widget _buildCode(BuildContext context) {
     return Code("""
@@ -90,57 +89,36 @@ NeumorphicRadio(
 
   Widget _buildWidget(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(12),
+      padding: const EdgeInsets.all(12),
       child: Row(
         children: <Widget>[
           Text(
             "Default",
             style: TextStyle(color: NeumorphicTheme.defaultTextColor(context)),
           ),
-          SizedBox(width: 12),
-          NeumorphicRadio(
-            //uncomment to test colors
-            //style: NeumorphicRadioStyle(
-            //  selectedColor: Colors.black,
-            //  unselectedColor: Colors.blue
-            //),
-            groupValue: groupValue,
-            value: 1991,
-            onChanged: (value) {
-              setState(() {
-                groupValue = value;
-              });
-            },
-            padding: EdgeInsets.all(8.0),
-            child: Text("1991"),
-          ),
-          SizedBox(width: 12),
-          NeumorphicRadio(
-            value: 2000,
-            groupValue: groupValue,
-            onChanged: (value) {
-              setState(() {
-                groupValue = value;
-              });
-            },
-            padding: EdgeInsets.all(8.0),
-            child: Text("2000"),
-          ),
-          SizedBox(width: 12),
-          NeumorphicRadio(
-            groupValue: groupValue,
-            value: 2012,
-            onChanged: (value) {
-              setState(() {
-                groupValue = value;
-              });
-            },
-            padding: EdgeInsets.all(8.0),
-            child: Text("2012"),
-          ),
+          const SizedBox(width: 12),
+          ..._buildNeumorphicRadios(),
         ],
       ),
     );
+  }
+
+  List<Widget> _buildNeumorphicRadios() {
+    final years = [1991, 2000, 2012];
+
+    return years.map((year) {
+      return Padding(
+        padding: const EdgeInsets.only(right: 12),
+        child: NeumorphicRadio<int>(
+          value: year,
+          groupValue: groupValue,
+          onChanged: (value) =>
+              setState(() => groupValue = value ?? groupValue),
+          padding: const EdgeInsets.all(8.0),
+          child: Text("$year"),
+        ),
+      );
+    }).toList();
   }
 
   Widget build(BuildContext context) {
@@ -160,7 +138,7 @@ class CircleRadios extends StatefulWidget {
 }
 
 class _CircleRadiosState extends State<CircleRadios> {
-  String groupValue;
+  late String groupValue;
 
   Widget _buildCode(BuildContext context) {
     return Code("""
@@ -182,61 +160,38 @@ NeumorphicRadio(
 
   Widget _buildWidget(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(12),
+      padding: const EdgeInsets.all(12),
       child: Row(
         children: <Widget>[
           Text(
             "Circle",
             style: TextStyle(color: NeumorphicTheme.defaultTextColor(context)),
           ),
-          SizedBox(width: 12),
-          NeumorphicRadio(
-            style: NeumorphicRadioStyle(
-              boxShape: NeumorphicBoxShape.circle(),
-            ),
-            groupValue: groupValue,
-            value: "A",
-            onChanged: (value) {
-              setState(() {
-                groupValue = value;
-              });
-            },
-            padding: EdgeInsets.all(18.0),
-            child: Text("A"),
-          ),
-          SizedBox(width: 12),
-          NeumorphicRadio(
-            value: "B",
-            style: NeumorphicRadioStyle(
-              boxShape: NeumorphicBoxShape.circle(),
-            ),
-            groupValue: groupValue,
-            onChanged: (value) {
-              setState(() {
-                groupValue = value;
-              });
-            },
-            padding: EdgeInsets.all(18.0),
-            child: Text("B"),
-          ),
-          SizedBox(width: 12),
-          NeumorphicRadio(
-            style: NeumorphicRadioStyle(
-              boxShape: NeumorphicBoxShape.circle(),
-            ),
-            groupValue: groupValue,
-            value: "C",
-            onChanged: (value) {
-              setState(() {
-                groupValue = value;
-              });
-            },
-            padding: EdgeInsets.all(18.0),
-            child: Text("C"),
-          ),
+          const SizedBox(width: 12),
+          ..._buildNeumorphicRadios(),
         ],
       ),
     );
+  }
+
+  List<Widget> _buildNeumorphicRadios() {
+    final values = ["A", "B", "C"];
+
+    return values.map((value) {
+      return Padding(
+        padding: const EdgeInsets.only(right: 12),
+        child: NeumorphicRadio<String>(
+          style: const NeumorphicRadioStyle(
+            boxShape: NeumorphicBoxShape.circle(),
+          ),
+          groupValue: groupValue,
+          value: value,
+          onChanged: (val) => setState(() => groupValue = val ?? groupValue),
+          padding: const EdgeInsets.all(18.0),
+          child: Text(value),
+        ),
+      );
+    }).toList();
   }
 
   Widget build(BuildContext context) {
@@ -256,54 +211,51 @@ class _EnabledDisabledWidget extends StatefulWidget {
 }
 
 class _EnabledDisabledWidgetState extends State<_EnabledDisabledWidget> {
-  int groupValue;
+  late int groupValue;
 
   Widget _buildWidget(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(12),
+      padding: const EdgeInsets.all(12),
       child: Row(
         children: <Widget>[
-          Text(
-            "Enabled :",
-            style: TextStyle(color: NeumorphicTheme.defaultTextColor(context)),
-          ),
-          SizedBox(width: 12),
-          NeumorphicRadio(
-            groupValue: groupValue,
-            value: 1,
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 18),
-            child: Text("First"),
-            onChanged: (value) {
-              setState(() {
-                groupValue = value;
-              });
-            },
-          ),
-          SizedBox(width: 24),
-          Text(
-            "Disabled :",
-            style: TextStyle(color: NeumorphicTheme.defaultTextColor(context)),
-          ),
-          SizedBox(width: 12),
-          NeumorphicRadio(
-            isEnabled: false,
-            groupValue: groupValue,
-            value: 2,
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 18),
-            child: Text("Second"),
-            onChanged: (value) {
-              setState(() {
-                groupValue = value;
-              });
-            },
-          ),
+          _buildLabel("Enabled :", context),
+          const SizedBox(width: 12),
+          _buildNeumorphicRadio(value: 1, label: "First"),
+          const SizedBox(width: 24),
+          _buildLabel("Disabled :", context),
+          const SizedBox(width: 12),
+          _buildNeumorphicRadio(value: 2, label: "Second", isEnabled: false),
         ],
       ),
     );
   }
 
+  Widget _buildLabel(String text, BuildContext context) {
+    return Text(
+      text,
+      style: TextStyle(color: NeumorphicTheme.defaultTextColor(context)),
+    );
+  }
+
+  Widget _buildNeumorphicRadio({
+    required int value,
+    required String label,
+    bool isEnabled = true,
+  }) {
+    return NeumorphicRadio<int>(
+      isEnabled: isEnabled,
+      groupValue: groupValue,
+      value: value,
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
+      child: Text(label),
+      onChanged: isEnabled
+          ? (val) => setState(() => groupValue = val ?? groupValue)
+          : null,
+    );
+  }
+
   Widget _buildCode(BuildContext context) {
-    return Code("""    
+    return Code("""
 int groupValue;
 
 NeumorphicRadio(

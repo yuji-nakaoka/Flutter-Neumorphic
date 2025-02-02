@@ -12,7 +12,7 @@ import 'galaxy_sample.dart';
 import 'widgets_sample.dart';
 
 class SamplesHome extends StatelessWidget {
-  Widget _buildButton({String text, VoidCallback onClick}) {
+  Widget _buildButton({required String text, required VoidCallback onClick}) {
     return NeumorphicButton(
       margin: EdgeInsets.only(bottom: 12),
       padding: EdgeInsets.symmetric(
@@ -46,7 +46,9 @@ class SamplesHome extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  TopBar(),
+                  TopBar(
+                    actions: [],
+                  ),
                   _buildButton(
                       text: "Tesla",
                       onClick: () {
@@ -108,7 +110,9 @@ class SamplesHome extends StatelessWidget {
                       onClick: () {
                         Navigator.of(context)
                             .push(MaterialPageRoute(builder: (context) {
-                          return WidgetsSample();
+                          return WidgetsSample(
+                            key: null,
+                          );
                         }));
                       }),
                 ],

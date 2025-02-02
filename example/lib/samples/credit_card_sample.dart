@@ -1,7 +1,4 @@
 import 'dart:ui';
-
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 class CreditCardSample extends StatefulWidget {
@@ -235,7 +232,7 @@ class __PageContentState extends State<_PageContent> {
                 setState(() {
                   _useDark = !_useDark;
 
-                  NeumorphicTheme.of(context).themeMode =
+                  NeumorphicTheme.of(context)!.themeMode =
                       _useDark ? ThemeMode.dark : ThemeMode.light;
                 });
               },
@@ -323,15 +320,11 @@ class __PageContentState extends State<_PageContent> {
         SizedBox(
           width: dotsSize,
           height: dotsSize,
-          child: NeumorphicRadio(
+          child: NeumorphicRadio<int>(
             groupValue: _dotIndex,
             value: 0,
-            onChanged: (value) {
-              setState(() {
-                _dotIndex = value;
-              });
-            },
-            style: NeumorphicRadioStyle(
+            onChanged: (value) => setState(() => _dotIndex = value ?? 0),
+            style: const NeumorphicRadioStyle(
               boxShape: NeumorphicBoxShape.circle(),
               shape: NeumorphicShape.convex,
             ),
@@ -340,43 +333,37 @@ class __PageContentState extends State<_PageContent> {
         SizedBox(
           width: 10,
         ),
-        SizedBox(
-          width: dotsSize,
-          height: dotsSize,
-          child: NeumorphicRadio(
-            groupValue: _dotIndex,
-            value: 1,
-            onChanged: (value) {
-              setState(() {
-                _dotIndex = value;
-              });
-            },
-            style: NeumorphicRadioStyle(
-              boxShape: NeumorphicBoxShape.circle(),
-              shape: NeumorphicShape.convex,
+        Row(
+          children: [
+            SizedBox(
+              width: dotsSize,
+              height: dotsSize,
+              child: NeumorphicRadio<int>(
+                groupValue: _dotIndex,
+                value: 1,
+                onChanged: (value) => setState(() => _dotIndex = value ?? 1),
+                style: const NeumorphicRadioStyle(
+                  boxShape: NeumorphicBoxShape.circle(),
+                  shape: NeumorphicShape.convex,
+                ),
+              ),
             ),
-          ),
-        ),
-        SizedBox(
-          width: 10,
-        ),
-        SizedBox(
-          width: dotsSize,
-          height: dotsSize,
-          child: NeumorphicRadio(
-            groupValue: _dotIndex,
-            value: 2,
-            onChanged: (value) {
-              setState(() {
-                _dotIndex = value;
-              });
-            },
-            style: NeumorphicRadioStyle(
-              boxShape: NeumorphicBoxShape.circle(),
-              shape: NeumorphicShape.convex,
+            const SizedBox(width: 10), // スペーサーのために const を適用
+            SizedBox(
+              width: dotsSize,
+              height: dotsSize,
+              child: NeumorphicRadio<int>(
+                groupValue: _dotIndex,
+                value: 2,
+                onChanged: (value) => setState(() => _dotIndex = value ?? 2),
+                style: const NeumorphicRadioStyle(
+                  boxShape: NeumorphicBoxShape.circle(),
+                  shape: NeumorphicShape.convex,
+                ),
+              ),
             ),
-          ),
-        )
+          ],
+        ),
       ],
     );
   }

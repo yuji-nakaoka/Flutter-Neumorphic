@@ -2,13 +2,12 @@ import 'package:example/lib/Code.dart';
 import 'package:example/lib/ThemeConfigurator.dart';
 import 'package:example/lib/color_selector.dart';
 import 'package:example/lib/top_bar.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 import 'dart:math' show Random;
 
 class IndicatorWidgetPage extends StatefulWidget {
-  IndicatorWidgetPage({Key key}) : super(key: key);
+  IndicatorWidgetPage({Key? key}) : super(key: key);
 
   @override
   createState() => _WidgetPageState();
@@ -102,13 +101,14 @@ NeumorphicIndicator(
             percent: percent,
           ),
           SizedBox(width: 12),
-          FlatButton(
-              child: Text('Update'),
-              onPressed: () {
-                setState(() {
-                  percent = Random().nextDouble();
-                });
-              }),
+          TextButton(
+            onPressed: () {
+              setState(() {
+                percent = Random().nextDouble();
+              });
+            },
+            child: const Text('Update'),
+          ),
         ],
       ),
     );
@@ -298,13 +298,14 @@ NeumorphicIndicator(
             duration: Duration(seconds: 1),
           ),
           SizedBox(width: 12),
-          FlatButton(
-              child: Text('Update'),
-              onPressed: () {
-                setState(() {
-                  percent = Random().nextDouble();
-                });
-              }),
+          TextButton(
+            onPressed: () {
+              setState(() {
+                percent = Random().nextDouble();
+              });
+            },
+            child: const Text('Update'),
+          ),
         ],
       ),
     );
@@ -356,13 +357,14 @@ NeumorphicIndicator(
               percent: percent,
               curve: Curves.bounceOut),
           SizedBox(width: 12),
-          FlatButton(
-              child: Text('Update'),
-              onPressed: () {
-                setState(() {
-                  percent = Random().nextDouble();
-                });
-              }),
+          TextButton(
+            onPressed: () {
+              setState(() {
+                percent = Random().nextDouble();
+              });
+            },
+            child: const Text('Update'),
+          ),
         ],
       ),
     );
