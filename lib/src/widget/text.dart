@@ -161,7 +161,6 @@ class NeumorphicText extends StatelessWidget {
   }
 }
 
-/// Neumorphic の内部実装
 class _NeumorphicText extends StatefulWidget {
   final String text;
   final NeumorphicStyle style;
