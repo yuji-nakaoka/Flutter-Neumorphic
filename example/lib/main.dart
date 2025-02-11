@@ -94,6 +94,13 @@ class MyHomePage extends StatelessWidget {
                 style: TextStyle(color: _textColor(context)),
               ),
             ),
+            NeumorphicText(
+              "Use Text Theme",
+              textStyle: Theme.of(context)
+                  .textTheme
+                  .titleLarge!
+                  .copyWith(fontWeight: FontWeight.w800),
+            ),
           ],
         ),
       ),
